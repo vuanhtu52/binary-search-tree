@@ -74,6 +74,31 @@ const Tree = arr => {
     };
     _root = buildTree(arr);
 
+    const insert = value => {
+        let currentNode = _root;
+        while (true) {
+            if  (value === currentNode.getValue()) {
+                console.log("Value already exists.");
+                break;
+            }
+            if (value < currentNode.getValue()) {
+                if (currentNode.getLeftChild() === null) {
+                    const node = Node(value);
+                    currentNode.setLeftChild(node);
+                    break;
+                }
+                currentNode = currentNode.getLeftChild();
+            } else {
+                if (currentNode.getRightChild() === null) {
+                    const node = Node(value);
+                    currentNode.setRightChild(node);
+                    break;
+                }
+                currentNode = currentNode.getRightChild();
+            }
+        }
+    };
+
     const prettyPrint = (node, prefix = "", isLeft = true) => {
         if (node === null) {
             return;
@@ -90,11 +115,14 @@ const Tree = arr => {
     return {
         getRoot,
         buildTree,
+        insert,
         prettyPrint,
     };
 };
 
 
 
-const tree = Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+const tree = Tree([1, 2, 3, 4, 5, 6, 7, 8, 11]);
+tree.insert(9);
+tree.insert(10);
 tree.prettyPrint(tree.getRoot());
