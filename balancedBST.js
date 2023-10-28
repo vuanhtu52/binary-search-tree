@@ -177,6 +177,33 @@ const Tree = arr => {
         }
     };
 
+    const find = value => {
+        let currentNode = _root;
+        if (currentNode.getValue() === value) {
+            return currentNode;
+        }
+
+        while (currentNode.getValue() !== value) {
+            // Return null if we have arrived at a leaf node
+            if (currentNode.getLeftChild() === null && currentNode.getRightChild() === null) {
+                console.log("Value does not exist in the tree.");
+                return null;
+            }
+
+            // Traverse to the next node
+            if (value < currentNode.getValue()) {
+                currentNode = currentNode.getLeftChild();
+            } else if (value > currentNode.getValue()) {
+                currentNode = currentNode.getRightChild();
+            }
+
+            // Check if the next node matches the value
+            if (currentNode.getValue() === value) {
+                return currentNode;
+            }
+        }
+    };
+
     const prettyPrint = (node, prefix = "", isLeft = true) => {
         if (node === null) {
             return;
@@ -195,6 +222,7 @@ const Tree = arr => {
         buildTree,
         insertNode,
         deleteNode,
+        find,
         prettyPrint,
     };
 };
@@ -203,6 +231,6 @@ const Tree = arr => {
 
 const tree = Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 tree.prettyPrint(tree.getRoot());
-tree.deleteNode(2);
-console.log("---");
-tree.prettyPrint(tree.getRoot());
+const node = tree.find(7);
+console.log(node);
+console.log(node.getValue());
