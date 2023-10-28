@@ -219,18 +219,40 @@ const Tree = arr => {
             // Call the callback function with the first element in the queue
             if (cb) {
                 cb(queue[0]);
-            } else {
-                array.push(queue[0].getValue());
-            }
+            } 
+            array.push(queue[0].getValue());
 
             // Dequeue the first element in the queue
             queue.shift();
         }
 
-        if (!cb) {
+        return array;
+    }; 
+
+    const levelOrderRecursive = (queue, array, cb) => {
+        if (queue.length === 0) {
             return array;
         }
-    }; 
+
+        // Enqueue the children of the first element in the queue
+        if (queue[0].getLeftChild()) {
+            queue.push(queue[0].getLeftChild());
+        }
+        if (queue[0].getRightChild()) {
+            queue.push(queue[0].getRightChild())
+        }
+
+        // Call the callback function with the first element in the queue
+        if (cb) {
+            cb(queue[0]);
+        } 
+        array.push(queue[0].getValue());
+        
+        // Dequeue the first element in the queue
+        queue.shift();
+
+        return levelOrderRecursive(queue, array, cb);
+    };
 
     const prettyPrint = (node, prefix = "", isLeft = true) => {
         if (node === null) {
@@ -252,6 +274,7 @@ const Tree = arr => {
         deleteNode,
         find,
         levelOrderIter,
+        levelOrderRecursive,
         prettyPrint,
     };
 };
@@ -264,7 +287,12 @@ tree.prettyPrint(tree.getRoot());
 // console.log(node);
 // console.log(node.getValue());
 
-tree.levelOrderIter(node => console.log(node.getValue()));
+// tree.levelOrderIter(node => console.log(node.getValue()));
 
-val = tree.levelOrderIter();
-console.log(val);
+// const val = tree.levelOrderIter();
+// console.log(val);
+
+tree.levelOrderRecursive([tree.getRoot()], [], node => console.log(node.getValue()));
+
+// const val = tree.levelOrderRecursive([tree.getRoot()], []);
+// console.log("val: ", val);
