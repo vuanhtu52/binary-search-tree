@@ -204,6 +204,25 @@ const Tree = arr => {
         }
     };
 
+    const levelOrderIter  = cb => {
+        let queue = [_root];
+        while (queue.length > 0) {
+            // Enqueue the children of the first element in the queue
+            if (queue[0].getLeftChild()) {
+                queue.push(queue[0].getLeftChild());
+            }
+            if (queue[0].getRightChild()) {
+                queue.push(queue[0].getRightChild())
+            }
+
+            // Call the callback function with the first element in the queue
+            cb(queue[0]);
+
+            // Dequeue the first element in the queue
+            queue.shift();
+        }
+    };
+
     const prettyPrint = (node, prefix = "", isLeft = true) => {
         if (node === null) {
             return;
@@ -223,6 +242,7 @@ const Tree = arr => {
         insertNode,
         deleteNode,
         find,
+        levelOrderIter,
         prettyPrint,
     };
 };
@@ -231,6 +251,8 @@ const Tree = arr => {
 
 const tree = Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 tree.prettyPrint(tree.getRoot());
-const node = tree.find(7);
-console.log(node);
-console.log(node.getValue());
+// const node = tree.find(7);
+// console.log(node);
+// console.log(node.getValue());
+
+tree.levelOrderIter(node => console.log(node.getValue()));
