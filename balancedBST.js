@@ -74,7 +74,7 @@ const Tree = arr => {
     };
     _root = buildTree(arr);
 
-    const insert = value => {
+    const insertNode = value => {
         let currentNode = _root;
         while (true) {
             if  (value === currentNode.getValue()) {
@@ -99,6 +99,84 @@ const Tree = arr => {
         }
     };
 
+    const deleteNode = value => {
+        let previousNode = null;
+        let currentNode = _root;
+    
+        while (true) {
+            // If the value does not exist in any node
+            if (currentNode.getLeftChild() === null && currentNode.getRightChild() === null && currentNode.getValue() !== value) {
+                console.log("Value does not exist in the tree.");
+                break;
+            }
+
+            // When we have found the value at currentNode
+            if (currentNode.getValue() === value) {
+                // If currentNode is a leaf
+                if (currentNode.getLeftChild() === null && currentNode.getRightChild() === null) {
+                    if (previousNode.getLeftChild() === currentNode) {
+                        previousNode.setLeftChild(null);
+                    } else if (previousNode.getRightChild() === currentNode) {
+                        previousNode.setRightChild(null);
+                    }
+                }
+
+                // If currentNode has one child
+                if (currentNode.getLeftChild() === null || currentNode.getRightChild() === null) {
+                    let nextNode = currentNode.getLeftChild() || currentNode.getRightChild();
+                    if (previousNode.getLeftChild() === currentNode) {
+                        previousNode.setLeftChild(nextNode);
+                    } else if (previousNode.getRightChild() === currentNode) {
+                        previousNode.setRightChild(nextNode);
+                    }
+                    currentNode.setLeftChild(null);
+                    currentNode.setRightChild(null);
+                }
+
+                // If currentNode has two children
+                if (currentNode.getLeftChild() && currentNode.getRightChild()) {
+                    // Find the inorder successor of currentNode
+                    let successorParent = currentNode;
+                    let successorNode = currentNode.getRightChild();
+                    while (successorNode.getLeftChild()) {
+                        successorParent = successorNode;
+                        successorNode = successorNode.getLeftChild();
+                    }
+
+                    // Copy value of successorNode to currentNode
+                    currentNode.setValue(successorNode.getValue());
+
+                    // Remove successorNode, which either has a right child or no child
+                    if (successorNode.getRightChild()) {
+                        if (successorParent.getLeftChild() === successorNode) {
+                            successorParent.setLeftChild(successorNode.getRightChild());
+                        } else if (successorParent.getRightChild() === successorNode) {
+                            successorParent.setRightChild(successorNode.getRightChild());
+                        }
+                        successorNode.setRightChild(null);
+                    } else {
+                        if (successorParent.getLeftChild() === successorNode) {
+                            successorParent.setLeftChild(null);
+                        } else if (successorParent.getRightChild() === successorNode) {
+                            successorParent.setRightChild(null);
+                        }
+                    }
+                }
+
+                // Stop the loop
+                break;
+            }
+
+            // Traverse to the next node
+            previousNode = currentNode;
+            if (value < currentNode.getValue()) {
+                currentNode = currentNode.getLeftChild();
+            } else if (value > currentNode.getValue()) {
+                currentNode = currentNode.getRightChild();
+            }           
+        }
+    };
+
     const prettyPrint = (node, prefix = "", isLeft = true) => {
         if (node === null) {
             return;
@@ -115,14 +193,16 @@ const Tree = arr => {
     return {
         getRoot,
         buildTree,
-        insert,
+        insertNode,
+        deleteNode,
         prettyPrint,
     };
 };
 
 
 
-const tree = Tree([1, 2, 3, 4, 5, 6, 7, 8, 11]);
-tree.insert(9);
-tree.insert(10);
+const tree = Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+tree.prettyPrint(tree.getRoot());
+tree.deleteNode(2);
+console.log("---");
 tree.prettyPrint(tree.getRoot());
