@@ -323,6 +323,20 @@ const Tree = arr => {
         return array;
     };
 
+    const height = node => {
+        // Exit condition
+        if (node === null) {
+            return -1;
+        }
+
+        // Calculate the left height
+        const leftHeight = height(node.getLeftChild());
+        // Calculate the right height
+        const rightHeight = height(node.getRightChild());
+
+        return Math.max(leftHeight, rightHeight) + 1;
+    };
+
     const prettyPrint = (node, prefix = "", isLeft = true) => {
         if (node === null) {
             return;
@@ -347,6 +361,7 @@ const Tree = arr => {
         inorder,
         preorder,
         postorder,
+        height,
         prettyPrint,
     };
 };
@@ -355,10 +370,9 @@ const Tree = arr => {
 
 const tree = Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 // const tree = Tree([1, 2, 4, 9]);
+// const tree = Tree([]);
 tree.prettyPrint(tree.getRoot());
 
-tree.postorder(tree.getRoot(), [], node => console.log(node.getValue()));
-
-let array = tree.postorder(tree.getRoot(), []); 
-console.log(array);
+let height = tree.height(tree.getRoot());
+console.log(height);
 
