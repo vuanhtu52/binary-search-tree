@@ -254,6 +254,29 @@ const Tree = arr => {
         return levelOrderRecursive(queue, array, cb);
     };
 
+    const inorder = (root, array, cb) => {
+        // Exit condition
+        if (root === null) {
+            return array;
+        }
+
+        // Recursively traverse to the left node
+        array = inorder(root.getLeftChild(), array, cb);
+
+        // Visit the node and pass it to the callback function
+        if (cb) {
+            cb(root);
+        }
+
+        // Add the node's value to the array to return later
+        array.push(root.getValue());
+
+        // Recursively traverse to the right node
+        array = inorder(root.getRightChild(), array, cb);
+
+        return array;
+    };
+
     const prettyPrint = (node, prefix = "", isLeft = true) => {
         if (node === null) {
             return;
@@ -275,24 +298,19 @@ const Tree = arr => {
         find,
         levelOrderIter,
         levelOrderRecursive,
+        inorder,
         prettyPrint,
     };
 };
 
 
 
-const tree = Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+// const tree = Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+const tree = Tree([1, 2, 4, 9]);
 tree.prettyPrint(tree.getRoot());
-// const node = tree.find(7);
-// console.log(node);
-// console.log(node.getValue());
 
-// tree.levelOrderIter(node => console.log(node.getValue()));
+tree.inorder(tree.getRoot(), [], node => console.log(node.getValue()));
 
-// const val = tree.levelOrderIter();
-// console.log(val);
+let array = tree.inorder(tree.getRoot(), []); 
+console.log(array);
 
-tree.levelOrderRecursive([tree.getRoot()], [], node => console.log(node.getValue()));
-
-// const val = tree.levelOrderRecursive([tree.getRoot()], []);
-// console.log("val: ", val);
