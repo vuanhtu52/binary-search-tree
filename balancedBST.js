@@ -277,6 +277,29 @@ const Tree = arr => {
         return array;
     };
 
+    const preorder = (root, array, cb) => {
+        // Exit condition
+        if (root === null) {
+            return array;
+        }
+
+        // Visit the node and pass it to the callback function
+        if (cb) {
+            cb(root);
+        }
+
+        // Add the node's value to the array to return later
+        array.push(root.getValue());
+
+        // Recursively traverse to the left node
+        array = preorder(root.getLeftChild(), array, cb);
+
+        // Recursively traverse to the right node
+        array = preorder(root.getRightChild(), array, cb);
+
+        return array;
+    };
+
     const prettyPrint = (node, prefix = "", isLeft = true) => {
         if (node === null) {
             return;
@@ -299,6 +322,7 @@ const Tree = arr => {
         levelOrderIter,
         levelOrderRecursive,
         inorder,
+        preorder,
         prettyPrint,
     };
 };
@@ -309,8 +333,8 @@ const Tree = arr => {
 const tree = Tree([1, 2, 4, 9]);
 tree.prettyPrint(tree.getRoot());
 
-tree.inorder(tree.getRoot(), [], node => console.log(node.getValue()));
+tree.preorder(tree.getRoot(), [], node => console.log(node.getValue()));
 
-let array = tree.inorder(tree.getRoot(), []); 
+let array = tree.preorder(tree.getRoot(), []); 
 console.log(array);
 
