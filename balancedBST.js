@@ -326,7 +326,7 @@ const Tree = arr => {
     const height = node => {
         // Exit condition
         if (node === null) {
-            return -1;
+            return null;
         }
 
         // Calculate the left height
@@ -335,6 +335,34 @@ const Tree = arr => {
         const rightHeight = height(node.getRightChild());
 
         return Math.max(leftHeight, rightHeight) + 1;
+    };
+
+    const depth = (root, node) => {
+        // If the node does not exist in the tree
+        if (root === null) {
+            console.log("The node does not exist in the binary tree.")
+            return null;
+        }
+
+        if (node.getValue() === root.getValue()) {
+            return 0;
+        }
+
+        if (node.getValue() < root.getValue()) {
+            let currentDepth = depth(root.getLeftChild(), node);
+            if (currentDepth === null) {
+                return null;
+            } else {
+                return currentDepth + 1;
+            }
+        } else if (node.getValue() > root.getValue()) {
+            let currentDepth = depth(root.getRightChild(), node);
+            if (currentDepth === null) {
+                return null;
+            } else {
+                return currentDepth + 1;
+            }
+        }
     };
 
     const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -362,6 +390,7 @@ const Tree = arr => {
         preorder,
         postorder,
         height,
+        depth,
         prettyPrint,
     };
 };
@@ -373,6 +402,7 @@ const tree = Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 // const tree = Tree([]);
 tree.prettyPrint(tree.getRoot());
 
-let height = tree.height(tree.getRoot());
-console.log(height);
+let depth = tree.depth(tree.getRoot(), tree.getRoot().getLeftChild());
+// let depth = tree.depth(tree.getRoot(), Node(-1));
+console.log(depth);
 
