@@ -365,8 +365,27 @@ const Tree = arr => {
         }
     };
 
-    const isBalanced = () => {
-        
+    const isBalanced = (root, isRootBalanced, height) => {
+        // Exit condition
+        if (root === null) {
+            return [root, true, -1];
+        }
+
+        // Check if the left/right subtree is balanced  and get the height
+        const [leftChild, isLeftBalanced, leftHeight] = isBalanced(root.getLeftChild(), null, null);
+        const [rightChild, isRightBalanced, rightHeight] = isBalanced(root.getRightChild(), null, null);
+
+        if (Math.abs(leftHeight - rightHeight) <= 1) {
+            isRootBalanced = true;
+        } else {
+            isRootBalanced = false;
+        }
+
+        isRootBalanced = isRootBalanced && isLeftBalanced && isRightBalanced;
+
+        height = Math.max(leftHeight, rightHeight) + 1;
+
+        return [root, isRootBalanced, height];
     };
 
     const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -402,12 +421,12 @@ const Tree = arr => {
 
 
 
-// const tree = Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+const tree = Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 // const tree = Tree([1, 2, 4, 9]);
-const tree = Tree([1]);
+// const tree = Tree([]);
 tree.prettyPrint(tree.getRoot());
 
 // console.log(tree.isBalanced());
 
-console.log(tree.height(tree.getRoot()));
+console.log(tree.isBalanced(tree.getRoot(), null, null)[1]);
 
