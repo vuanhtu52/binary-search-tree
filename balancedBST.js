@@ -388,6 +388,12 @@ const Tree = arr => {
         return [root, isRootBalanced, height];
     };
 
+    const rebalance = () => {
+        // Perform in-order traversal which returns a sorted array
+        const sortedArray = inorder(_root, []);
+        _root = buildTree(sortedArray);
+    };
+
     const prettyPrint = (node, prefix = "", isLeft = true) => {
         if (node === null) {
             return;
@@ -415,18 +421,23 @@ const Tree = arr => {
         height,
         depth,
         isBalanced,
+        rebalance,
         prettyPrint,
     };
 };
 
 
 
-const tree = Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-// const tree = Tree([1, 2, 4, 9]);
+// const tree = Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+const tree = Tree([1, 2, 4, 9]);
 // const tree = Tree([]);
+tree.insertNode(10);
 tree.prettyPrint(tree.getRoot());
 
 // console.log(tree.isBalanced());
 
 console.log(tree.isBalanced(tree.getRoot(), null, null)[1]);
+
+tree.rebalance();
+tree.prettyPrint(tree.getRoot());
 
