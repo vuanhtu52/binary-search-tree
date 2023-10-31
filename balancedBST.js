@@ -77,7 +77,7 @@ const Tree = arr => {
     const insertNode = value => {
         let currentNode = _root;
         while (true) {
-            if  (value === currentNode.getValue()) {
+            if (value === currentNode.getValue()) {
                 console.log("Value already exists.");
                 break;
             }
@@ -102,7 +102,7 @@ const Tree = arr => {
     const deleteNode = value => {
         let previousNode = null;
         let currentNode = _root;
-    
+
         while (true) {
             // If the value does not exist in any node
             if (currentNode.getLeftChild() === null && currentNode.getRightChild() === null && currentNode.getValue() !== value) {
@@ -173,7 +173,7 @@ const Tree = arr => {
                 currentNode = currentNode.getLeftChild();
             } else if (value > currentNode.getValue()) {
                 currentNode = currentNode.getRightChild();
-            }           
+            }
         }
     };
 
@@ -204,7 +204,7 @@ const Tree = arr => {
         }
     };
 
-    const levelOrderIter  = cb => {
+    const levelOrderIter = cb => {
         let queue = [_root];
         let array = [];
         while (queue.length > 0) {
@@ -219,7 +219,7 @@ const Tree = arr => {
             // Call the callback function with the first element in the queue
             if (cb) {
                 cb(queue[0]);
-            } 
+            }
             array.push(queue[0].getValue());
 
             // Dequeue the first element in the queue
@@ -227,7 +227,7 @@ const Tree = arr => {
         }
 
         return array;
-    }; 
+    };
 
     const levelOrderRecursive = (queue, array, cb) => {
         if (queue.length === 0) {
@@ -245,9 +245,9 @@ const Tree = arr => {
         // Call the callback function with the first element in the queue
         if (cb) {
             cb(queue[0]);
-        } 
+        }
         array.push(queue[0].getValue());
-        
+
         // Dequeue the first element in the queue
         queue.shift();
 
@@ -428,16 +428,70 @@ const Tree = arr => {
 
 
 
-// const tree = Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-const tree = Tree([1, 2, 4, 9]);
-// const tree = Tree([]);
-tree.insertNode(10);
+// // const tree = Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+// const tree = Tree([1, 2, 4, 9]);
+// // const tree = Tree([]);
+// tree.insertNode(10);
+// tree.prettyPrint(tree.getRoot());
+
+// // console.log(tree.isBalanced());
+
+// console.log(tree.isBalanced(tree.getRoot(), null, null)[1]);
+
+// tree.rebalance();
+// tree.prettyPrint(tree.getRoot());
+
+// Simple driver script
+
+// Create a binary tree with random numbers < 100
+const getRandomUniqueIntegers = (n, min, max) => {
+    if (n > max - min + 1) {
+        throw new Error("Cannot generate unique integers. Range is not large enough.");
+    }
+
+    const result = [];
+
+    while (result.length < n) {
+        const randomInt = Math.floor(Math.random() * (max - min + 1) + min);
+
+        if (!result.includes(randomInt)) {
+            result.push(randomInt);
+        }
+    }
+
+    return result;
+};
+
+const array = getRandomUniqueIntegers(50, 0, 100);
+const tree = Tree(array);
 tree.prettyPrint(tree.getRoot());
 
-// console.log(tree.isBalanced());
+// Check if the tree is balanced
+console.log("Is it balanced? ", tree.isBalanced(tree.getRoot(), null, null)[1]);
 
-console.log(tree.isBalanced(tree.getRoot(), null, null)[1]);
+// Check the order of different traversal methods
+console.log("Level order traversal: ", tree.levelOrderRecursive([tree.getRoot()], [], null));
+console.log("Pre-order traversal: ", tree.preorder(tree.getRoot(), [], null));
+console.log("Post-order traversal: ", tree.postorder(tree.getRoot(), [], null));
+console.log("In-order traversal: ", tree.inorder(tree.getRoot(), [], null));
 
+// Unbalance the tree by a adding values > 100
+tree.insertNode(101);
+tree.insertNode(102);
+tree.insertNode(103);
+
+// Check if the tree is balanced
+console.log("Is it balanced? ", tree.isBalanced(tree.getRoot(), null, null)[1]);
+
+// Rebalance the tree
 tree.rebalance();
-tree.prettyPrint(tree.getRoot());
+
+// Check if the tree is balanced
+console.log("Is it balanced? ", tree.isBalanced(tree.getRoot(), null, null)[1]);
+
+// Check the order of different traversal methods
+console.log("Level order traversal: ", tree.levelOrderRecursive([tree.getRoot()], [], null));
+console.log("Pre-order traversal: ", tree.preorder(tree.getRoot(), [], null));
+console.log("Post-order traversal: ", tree.postorder(tree.getRoot(), [], null));
+console.log("In-order traversal: ", tree.inorder(tree.getRoot(), [], null));
 
