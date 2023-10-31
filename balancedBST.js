@@ -326,7 +326,7 @@ const Tree = arr => {
     const height = node => {
         // Exit condition
         if (node === null) {
-            return null;
+            return -1;
         }
 
         // Calculate the left height
@@ -365,6 +365,10 @@ const Tree = arr => {
         }
     };
 
+    const isBalanced = () => {
+        
+    };
+
     const prettyPrint = (node, prefix = "", isLeft = true) => {
         if (node === null) {
             return;
@@ -391,18 +395,19 @@ const Tree = arr => {
         postorder,
         height,
         depth,
+        isBalanced,
         prettyPrint,
     };
 };
 
 
 
-const tree = Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+// const tree = Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 // const tree = Tree([1, 2, 4, 9]);
-// const tree = Tree([]);
+const tree = Tree([1]);
 tree.prettyPrint(tree.getRoot());
 
-let depth = tree.depth(tree.getRoot(), tree.getRoot().getLeftChild());
-// let depth = tree.depth(tree.getRoot(), Node(-1));
-console.log(depth);
+// console.log(tree.isBalanced());
+
+console.log(tree.height(tree.getRoot()));
 
